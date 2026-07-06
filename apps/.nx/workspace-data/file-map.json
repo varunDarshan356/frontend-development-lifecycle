@@ -1,0 +1,84 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.7.6",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": "client-central/.gitignore",
+        "hash": "13046175384202504187"
+      },
+      {
+        "file": "client-central/README.md",
+        "hash": "6146528543463783081"
+      },
+      {
+        "file": "client-central/eslint.config.js",
+        "hash": "17737926363764924246"
+      },
+      {
+        "file": "client-central/index.html",
+        "hash": "2289776807718438963"
+      },
+      {
+        "file": "client-central/package.json",
+        "hash": "3413633734029278742"
+      },
+      {
+        "file": "client-central/public/favicon.svg",
+        "hash": "9681363740239943431"
+      },
+      {
+        "file": "client-central/public/icons.svg",
+        "hash": "12690649164411559435"
+      },
+      {
+        "file": "client-central/src/App.css",
+        "hash": "18125914695151215779"
+      },
+      {
+        "file": "client-central/src/App.tsx",
+        "hash": "7223607794596904820"
+      },
+      {
+        "file": "client-central/src/assets/hero.png",
+        "hash": "8887776959365123467"
+      },
+      {
+        "file": "client-central/src/assets/react.svg",
+        "hash": "16069471864800376455"
+      },
+      {
+        "file": "client-central/src/assets/vite.svg",
+        "hash": "6723104814466855237"
+      },
+      {
+        "file": "client-central/src/index.css",
+        "hash": "12171107281711778866"
+      },
+      {
+        "file": "client-central/src/main.tsx",
+        "hash": "11038211546439381838"
+      },
+      {
+        "file": "client-central/tsconfig.app.json",
+        "hash": "723432853782723722"
+      },
+      {
+        "file": "client-central/tsconfig.json",
+        "hash": "2365188958523842680"
+      },
+      {
+        "file": "client-central/tsconfig.node.json",
+        "hash": "11630970182584720633"
+      },
+      {
+        "file": "client-central/vite.config.ts",
+        "hash": "16225914092815047172"
+      }
+    ]
+  },
+  "externalNodesHash": "3244421341483603138"
+}
