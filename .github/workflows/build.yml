@@ -29,8 +29,8 @@ jobs:
       - name: Build Client Central
         run: pnpm pnpm --filter client-central build
 
-      - name: Check build output
-        run: ls -la apps/client-cental && ls -ls apps/client-central/dist
+      - name: Verify build output
+        run: ls -ls apps/client-central/dist
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
