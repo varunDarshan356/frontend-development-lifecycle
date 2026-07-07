@@ -1,0 +1,118 @@
+name: Integration Tests (Floci)
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  AWS_ACCESS_KEY_ID: test
+  AWS_SECRET_ACCESS_KEY: test
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_ENDPOINT_URL: http://localhost:4566
+
+  BUILD_DIR: apps/client-central/dist
+  BUCKET_NAME: client-central
+
+jobs:
+  integration:
+    name: Integration Tests with Floci
+    runs-on: ubuntu-latest
+
+    steps:
+      ##########################################################################
+      # Download build artifact
+      ##########################################################################
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: client-central
+          path: ${{ env.BUILD_DIR }}
+
+      ##########################################################################
+      # Verify build exists
+      ##########################################################################
+      - name: Verify build
+        run: |
+          test -f "${BUILD_DIR}/index.html"
+
+      ##########################################################################
+      # Start Floci
+      ##########################################################################
+      - name: Start Floci
+        run: |
+          docker run -d \
+            --name floci \
+            -p 4566:4566 \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            floci/floci:latest
+
+      ##########################################################################
+      # Wait until Floci is ready
+      ##########################################################################
+      - name: Wait for Floci
+        run: |
+          echo "Waiting for Floci..."
+
+          for i in {1..30}; do
+            if aws sts get-caller-identity \
+              --endpoint-url $AWS_ENDPOINT_URL >/dev/null 2>&1; then
+              echo "Floci is ready."
+              exit 0
+            fi
+
+            sleep 2
+          done
+
+          echo "Floci failed to start."
+          docker logs floci
+          exit 1
+
+      ##########################################################################
+      # Create bucket
+      ##########################################################################
+      - name: Create S3 bucket
+        run: |
+          aws s3 mb s3://${BUCKET_NAME} \
+            --endpoint-url $AWS_ENDPOINT_URL || true
+
+      ##########################################################################
+      # Upload build
+      ##########################################################################
+      - name: Upload build to Floci S3
+        run: |
+          aws s3 sync \
+            "${BUILD_DIR}" \
+            s3://${BUCKET_NAME} \
+            --delete \
+            --endpoint-url $AWS_ENDPOINT_URL
+
+      ##########################################################################
+      # Verify upload
+      ##########################################################################
+      - name: Verify uploaded files
+        run: |
+          aws s3 ls \
+            s3://${BUCKET_NAME} \
+            --recursive \
+            --endpoint-url $AWS_ENDPOINT_URL
+
+      ##########################################################################
+      # Smoke test
+      ##########################################################################
+      - name: Verify index.html exists
+        run: |
+          aws s3api head-object \
+            --bucket ${BUCKET_NAME} \
+            --key index.html \
+            --endpoint-url $AWS_ENDPOINT_URL
+
+      ##########################################################################
+      # Cleanup
+      ##########################################################################
+      - name: Stop Floci
+        if: always()
+        run: |
+          docker stop floci
+          docker rm floci
