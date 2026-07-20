@@ -1,9 +1,18 @@
 import styles from "./Button.module.css";
+import type { ReactNode } from "react";
 
-export const Button = ({ onClick }: { onClick: () => void}) => {
-    return (
-        <button className={styles.btn} onClick={onClick}>
-            Shared Button
-        </button>
-    );
+type ButtonProps = {
+  children?: ReactNode;
+  onClick?: () => void;
 };
+
+export function Button({
+  children = "Shared Button",
+  onClick,
+}: ButtonProps) {
+  return (
+    <button className={styles.btn} onClick={onClick}>
+      {children}
+    </button>
+  );
+}

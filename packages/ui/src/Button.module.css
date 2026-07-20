@@ -1,3 +1,16 @@
 .btn {
-    background-color: yellow;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
 }
